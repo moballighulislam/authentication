@@ -9,7 +9,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get("session")?.value;
+  const token = request.cookies.get("jwt_token")?.value;
 
   if (!token) {
     const loginUrl = new URL("/login", request.url);

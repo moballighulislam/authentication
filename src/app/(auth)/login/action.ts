@@ -5,7 +5,7 @@ import z from "zod";
 
 const testUser = {
   id: "1",
-  email: "contact@gmail.com",
+  email: "admin@gmail.com",
   password: "12345678",
 };
 
