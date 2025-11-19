@@ -15,7 +15,7 @@ import {
   Layout,
   GitBranch,
 } from "lucide-react";
-import { logout } from "@/app/(auth)/login/action";
+import { logout } from "@/lib/actions/action";
 
 const FolderStructure = () => {
   const [expanded, setExpanded] = useState({
@@ -23,7 +23,12 @@ const FolderStructure = () => {
     audit: true,
     api: true,
     lib: true,
+    lib_api: true,
+    lib_utils: true,
+    lib_actions: true,
+    lib_types: true,
     components: true,
+    hooks: true,
   });
 
   const toggle = (key) => {
@@ -50,12 +55,19 @@ const FolderStructure = () => {
     </div>
   );
 
-  const FileItem = ({ name, description, level = 0 }) => (
+  const FileItem = ({ name, description, level = 0, highlight = false }) => (
     <div
       style={{ marginLeft: `${level * 20}px` }}
-      className="flex items-center gap-2 py-1 px-2 hover:bg-gray-50 rounded transition-colors"
+      className={`flex items-center gap-2 py-1 px-2 rounded transition-colors ${
+        highlight
+          ? "bg-green-50 hover:bg-green-100 border-l-2 border-green-500"
+          : "hover:bg-gray-50"
+      }`}
     >
-      <File size={16} className="text-blue-600" />
+      <File
+        size={16}
+        className={highlight ? "text-green-600" : "text-blue-600"}
+      />
       <span className="text-gray-700">{name}</span>
       {description && (
         <span className="text-xs text-gray-500 ml-2">→ {description}</span>
@@ -119,6 +131,26 @@ const FolderStructure = () => {
           />
           <FileItem name="report.ts" description="Report service" level={2} />
         </FolderItem>
+        <FolderItem name="actions/" itemKey="lib_actions" level={1}>
+          <FileItem
+            name="auth.ts"
+            description="Login/logout actions"
+            level={2}
+            highlight={true}
+          />
+          <FileItem
+            name="session.ts"
+            description="Session management"
+            level={2}
+            highlight={true}
+          />
+          <FileItem
+            name="oauth.ts"
+            description="OAuth providers"
+            level={2}
+            highlight={true}
+          />
+        </FolderItem>
         <FolderItem name="utils/" itemKey="lib_utils" level={1}>
           <FileItem
             name="scoring.ts"
@@ -126,10 +158,30 @@ const FolderStructure = () => {
             level={2}
           />
           <FileItem name="file.ts" description="File validation" level={2} />
+          <FileItem
+            name="jwt.ts"
+            description="JWT helpers"
+            level={2}
+            highlight={true}
+          />
+        </FolderItem>
+        <FolderItem name="types/" itemKey="lib_types" level={1}>
+          <FileItem name="audit.ts" description="Audit types" level={2} />
+          <FileItem
+            name="auth.ts"
+            description="Auth & user types"
+            level={2}
+            highlight={true}
+          />
         </FolderItem>
         <FileItem
-          name="types/audit.ts"
-          description="TypeScript types"
+          name="zod/validators.ts"
+          description="Zod schemas"
+          level={1}
+        />
+        <FileItem
+          name="fetchers/"
+          description="Server-side data fetchers"
           level={1}
         />
       </FolderItem>
@@ -140,14 +192,38 @@ const FolderStructure = () => {
           description="Audit-specific components"
           level={1}
         />
+        <FileItem name="dashboard/" description="Dashboard widgets" level={1} />
+        <FileItem name="common/" description="Reusable modules" level={1} />
       </FolderItem>
-      <FileItem name="hooks/useAuditState.ts" description="State management" />
-      <FileItem name="middleware.ts" description="JWT/Auth guard" />
+      <FolderItem name="hooks/" itemKey="hooks">
+        <FileItem
+          name="useAuditStore.ts"
+          description="Zustand audit state"
+          level={1}
+        />
+        <FileItem
+          name="useUpload.ts"
+          description="Upload logic hook"
+          level={1}
+        />
+        <FileItem
+          name="useRealtime.ts"
+          description="Real-time polling"
+          level={1}
+        />
+      </FolderItem>
+      <FileItem
+        name="middleware.ts"
+        description="JWT/Auth guard"
+        highlight={true}
+      />
+      <FileItem name="styles/globals.css" description="Global styles" />
+      <FileItem name="public/" description="Static assets" />
     </div>
   );
 };
 
-/* const Timeline = () => {
+const Timeline = () => {
   const phases = [
     {
       phase: "Planning & Design",
@@ -228,7 +304,7 @@ const FolderStructure = () => {
       </div>
     </div>
   );
-}; */
+};
 
 const TechStack = () => {
   const stack = {
@@ -386,14 +462,14 @@ const Features = () => {
   );
 };
 
-export default function Dashboard() {
+export default function AuditAppDocumentation() {
   const [activeTab, setActiveTab] = useState("overview");
 
   const tabs = [
     { id: "overview", label: "Overview", icon: "📋" },
     { id: "structure", label: "Folder Structure", icon: "📁" },
     { id: "workflow", label: "Workflow", icon: "🔄" },
-    // { id: "timeline", label: "Timeline", icon: "📅" },
+    { id: "timeline", label: "Timeline", icon: "📅" },
     { id: "tech", label: "Tech Stack", icon: "⚡" },
     { id: "features", label: "Features", icon: "✨" },
   ];
@@ -418,7 +494,6 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-        <div className=""></div>
       </div>
 
       {/* Navigation Tabs */}
@@ -654,7 +729,7 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/*  {activeTab === "timeline" && (
+        {activeTab === "timeline" && (
           <div className="space-y-6">
             <div>
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
@@ -666,7 +741,7 @@ export default function Dashboard() {
             </div>
             <Timeline />
           </div>
-        )} */}
+        )}
 
         {activeTab === "tech" && (
           <div className="space-y-6">

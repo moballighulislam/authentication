@@ -1,5 +1,6 @@
 "use server";
-import { createSession, deleteSession } from "@/lib/actions/auth/session";
+
+import { createSession, deleteSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 import z from "zod";
 

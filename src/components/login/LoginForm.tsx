@@ -1,7 +1,8 @@
 "use client";
 import { useActionState } from "react";
-import { login } from "./action";
+
 import SubmitButton from "@/components/SubmitButton";
+import { login } from "@/lib/actions/action";
 
 export default function LoginForm() {
   const [state, loginAction] = useActionState(login, undefined);
